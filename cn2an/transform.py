@@ -15,12 +15,13 @@ class Transform(object):
         self.an2cn = An2Cn().an2cn
         self.WORD_TO_SIM = WORD_TO_SIM
         self.WORD_TO_TRA = WORD_TO_TRA
-        self.cn_zeropattern = f"负?([零{self.all_num}]+点)?[{self.all_num}]+|负?零[{self.all_num}]+|零[{self.all_num}]+"
+        self.cn_zeropattern = f"负?零+([{self.all_num}]+点)?[{self.all_num}]+|负?零[{self.all_num}]+|零[{self.all_num}]+"
         self.zeroheading = f"负?零+[{self.all_num_ezero}]"
         self.cn_pattern = f"负?([{self.all_num}{self.all_unit}]+点)?[{self.all_num}{self.all_unit}]+"
-        self.cn_pattern_added = f"负?([{self.all_num}{self.all_unit}]+点)?[{self.all_num}{self.all_unit}]+|\
-            负?([{self.all_num}{self.all_unit}{self.all_num}]+点)?[{self.all_num}{self.all_unit}{self.all_num}]+|\
-            负?([{self.all_num}{self.all_unit}{self.all_num}{self.all_unit}]+点)?[{self.all_num}{self.all_unit}{self.all_num}{self.all_unit}]+"
+        #self.cn_pattern_added = f"负?([{self.all_num}{self.all_unit}]+点)?[{self.all_num}{self.all_unit}]+|\
+        #    负?([{self.all_num}{self.all_unit}]+点)?[{self.all_num}]+|\
+        #    负?([{self.all_num}{self.all_unit}{self.all_num}]+点)?[{self.all_num}{self.all_unit}{self.all_num}]+|\
+        #    负?([{self.all_num}{self.all_unit}{self.all_num}{self.all_unit}]+点)?[{self.all_num}{self.all_unit}{self.all_num}{self.all_unit}]+"
         self.smart_cn_pattern = f"-?([0-9]+.)?[0-9]+[{self.all_unit}]+"
 
     def transform(self, inputs: str, method: str = "cn2an") -> str:
@@ -29,7 +30,7 @@ class Transform(object):
             inputs = inputs.replace(nor_num, self.WORD_TO_SIM[nor_num])
         
         if method == "cn2an":
-            inputs = inputs.replace("廿", "二十").replace("半", "0.5").replace("两", "2")
+            inputs = inputs.replace("廿", "二十").replace("两", "2") #.replace("半", "0.5")
             # date
             inputs = re.sub(
                 fr"((({self.smart_cn_pattern})|({self.cn_pattern}))年)?([{self.all_num}十]+月)?([{self.all_num}十]+日)?",
@@ -44,7 +45,7 @@ class Transform(object):
             inputs = re.sub(fr"{self.cn_pattern}摄氏度",
                             lambda x: self.__sub_util(x.group(), "cn2an", "celsius"), inputs)
             # number
-            inputs = re.sub(self.cn_pattern_added,
+            inputs = re.sub(self.cn_pattern,
                             lambda x: self.__sub_util(x.group(), "cn2an", "number"), inputs)
             # zeronumber
             output = re.sub(self.cn_zeropattern,
@@ -99,7 +100,10 @@ class Transform(object):
                                       lambda x: str(self.cn2an(x.group(), "smart")), inputs).replace("摄氏度", "℃")
                     elif sub_mode == "number":
                         if inputs[0] != "零" and inputs[:2] != "负零":
-                            return str(self.cn2an(inputs, "smart"))
+                            if len(inputs)!=1:
+                                return str(self.cn2an(inputs, "smart"))
+                            else:
+                                return inputs
                         else:
                             return inputs
                     elif sub_mode == "zeronumber":
