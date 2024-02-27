@@ -3,8 +3,9 @@
 [![Pypi](https://img.shields.io/pypi/v/cn2an.svg)](https://pypi.org/project/cn2an/)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Ailln/cn2an/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/Ailln/cn2an.svg)](https://github.com/Ailln/cn2an/stargazers)
-[![build](https://img.shields.io/github/workflow/status/Ailln/cn2an/build)](https://github.com/Ailln/cn2an/actions?query=workflow%3Abuild)
+[![build](https://img.shields.io/github/actions/workflow/status/Ailln/cn2an/build.yml)](https://github.com/Ailln/cn2an/actions/workflows/build.yml)
 [![API](https://img.shields.io/badge/API-reference-pink.svg)](https://github.com/Ailln/cn2an/wiki/API)
+[![download month](https://img.shields.io/pypi/dm/cn2an)](https://pypistats.org/packages/cn2an)
 
 📦 **`cn2an`** 是一个快速转化 `中文数字` 和 `阿拉伯数字` 的工具包！
 
@@ -12,7 +13,7 @@
 
 🔗[点击访问 DEMO](https://www.dovolopor.com/cn2an)
 
-> 🎈 `v0.5.19 update`: update proces>=0.1.3 to fix v0.5.18
+> 🎈 `v0.5.22 update`: replace print with warning.warn
 > 
 > 🎈 [`en2an`](https://github.com/Ailln/en2an): 「英文数字」和「阿拉伯数字」互转正在收集需求中！ [详情](https://github.com/Ailln/en2an)
 >
@@ -80,7 +81,7 @@ import cn2an
 
 # 查看当前版本号
 print(cn2an.__version__)
-# 0.5.19
+# 0.5.22
 ```
 
 ### 3.1 `中文数字` => `阿拉伯数字`
@@ -182,6 +183,7 @@ output = cn2an.transform("小王的生日是2001年3月4日", "an2cn")
 # output:
 # 小王的生日是二零零一年三月四日
 
+
 ## 支持分数
 output = cn2an.transform("抛出去的硬币为正面的概率是二分之一", "cn2an")
 # output:
@@ -247,10 +249,10 @@ bash scripts/local_test.sh
 
 - 测试结果：
 
-    | 序号 | 功能 | 执行次数 | 执行时间(万次平均) | 性能(次/秒)
-    | :-: | :-: | :-: | :-: | :-: |
-    |  1  | an2cn | 10000 | 0.15 | **67k** |
-    |  2  | cn2an | 10000 | 0.35 | **29k** |
+    | 序号 |  功能   | 执行次数  | 执行时间(万次平均) | 性能(次/秒) |
+    |:--:|:-----:|:-----:|:----------:|:-------:|
+    | 1  | an2cn | 10000 |    0.15    | **67k** |
+    | 2  | cn2an | 10000 |    0.35    | **29k** |
 
 测试时，我使用的是最大长度的测试数据！因此，大多数情况下该库的性能会更好～
 
@@ -266,7 +268,9 @@ bash scripts/local_test.sh
 ## 9 致谢
 
 - [Thunder Bouble](https://github.com/sfyc23): 提出很多有效的反馈，包括一些 bug 和新功能；
-- [Damon Yu](https://github.com/20071313): 增加对全角数字和全角符号的支持。
+- [Damon Yu](https://github.com/20071313): 增加对全角数字和全角符号的支持；
+- [Beants](https://github.com/Beants): 修复了口语格式的 bug；
+- Ray: 提出修改输出 warn 的方法，以及其他一些建议。
 
 ## 10 参考
 
@@ -278,3 +282,4 @@ bash scripts/local_test.sh
 - [The Best Tool of Chinese Number to Digits](https://github.com/Wall-ee/chinese2digits)
 - [Microsoft Recognizers Text Overview](https://github.com/microsoft/Recognizers-Text)
 - [process: 数据预处理管道](https://github.com/Ailln/proces)
+- [wikipedia: 中文数字](https://zh.wikipedia.org/zh-sg/%E4%B8%AD%E6%96%87%E6%95%B0%E5%AD%97)
